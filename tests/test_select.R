@@ -10,9 +10,12 @@ base.interest <- c(
     file.path("2.2.0", c("ColumnDataTable", "RowDataTable"))
 )
 
+base.interest <- file.path("../objects", paste0(base.interest, ".rds"))
+visual.interest <- file.path("../objects", paste0(visual.interest, ".rds"))
+
 test_that("old base selection getters work correctly", {
     for (obj in base.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         expect_warning(out <- old[["ColumnSelectionSaved"]], "deprecated")
         expect_true(is.na(out))
@@ -28,7 +31,7 @@ test_that("old base selection getters work correctly", {
 
 test_that("old base selection setters work correctly", {
     for (obj in base.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         test <- old
         expect_warning(test[["ColumnSelectionSaved"]] <- 1, "deprecated")
@@ -50,7 +53,7 @@ test_that("old base selection setters work correctly", {
 
 test_that("new restrict selection setters work correctly", {
     for (obj in base.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         test <- old
         expect_warning(test[["ColumnSelectionRestrict"]] <- TRUE, "outdated")
@@ -64,7 +67,7 @@ test_that("new restrict selection setters work correctly", {
 
 test_that("old visual selection getters work correctly", {
     for (obj in visual.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         if (!is(old, "ComplexHeatmapPlot")) {
             expect_warning(out <- old[["SelectionEffect"]], "deprecated")
@@ -87,7 +90,7 @@ test_that("old visual selection getters work correctly", {
 
 test_that("new visual selection getters work correctly", {
     for (obj in visual.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         expect_warning(out <- old[["RowSelectionRestrict"]], "outdated")
         expect_false(out)
@@ -130,7 +133,7 @@ test_that("new visual selection getters work correctly", {
 
 test_that("old visual selection setters work correctly", {
     for (obj in visual.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         test <- old
         expect_warning(test[["SelectionEffect"]] <- "Restrict", "deprecated")
@@ -160,8 +163,8 @@ test_that("old visual selection setters work correctly", {
 
 test_that("new visual selection setters work correctly", {
     for (obj in visual.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
-        
+        old <- readRDS(obj)
+
         test <- old
         expect_warning(test[["RowSelectionRestrict"]] <- TRUE, "outdated")
         expect_true(test[["RowSelectionRestrict"]])

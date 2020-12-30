@@ -5,9 +5,11 @@ of.interest <- c(
     file.path("2.2.0", c("ColumnDataPlot", "RowDataPlot", "ReducedDimensionPlot", "FeatureAssayPlot", "SampleAssayPlot"))
 )
 
+of.interest <- file.path("../objects", paste0(of.interest, ".rds"))
+
 test_that("Old faceting getters work correctly", {
     for (obj in of.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         expect_warning(out <- old[["FacetByRow"]], "FacetByRow")
         expect_identical(out, "---")
@@ -29,7 +31,7 @@ test_that("Old faceting getters work correctly", {
 
 test_that("New faceting getters work correctly", {
     for (obj in of.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         test <- old
         slot(test, "FacetByRow", check=FALSE) <- "WHEE"
@@ -55,7 +57,7 @@ test_that("New faceting getters work correctly", {
 
 test_that("Old faceting setters work correctly", {
     for (obj in of.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         test <- old
         expect_warning(test[["FacetByRow"]] <- "WHEE", "FacetByRow")
@@ -81,7 +83,7 @@ test_that("Old faceting setters work correctly", {
 
 test_that("New faceting setters work correctly", {
     for (obj in of.interest) {
-        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        old <- readRDS(obj)
 
         test <- old
         if (.multiSelectionDimension(old)=="row") {
