@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 8 * * 5'
+
+name: test-old-objects
+
+jobs:
+  test-old-objects
+    runs-on: ubuntu-latest
+    container: iseedevelopers/isee:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        
+      - name: Test old objects
+        run: source("testthat.R")
+        shell: Rscript {0}
