@@ -8,7 +8,7 @@ on:
 name: test-old-objects
 
 jobs:
-  test-old-objects
+  test-old-objects:
     runs-on: ubuntu-latest
     container: iseedevelopers/isee:latest
 
