@@ -69,12 +69,14 @@ test_that("old visual selection getters work correctly", {
         if (!is(old, "ComplexHeatmapPlot")) {
             expect_warning(out <- old[["SelectionEffect"]], "deprecated")
             expect_identical(out, "Transparent")
+        } else {
             expect_warning(out <- old[["SelectionColor"]], "deprecated")
             expect_true(is.na(out))
-        } else {
             expect_warning(out <- old[["SelectionEffect"]], "deprecated")
             expect_identical(out, "Color")
         }
+        expect_warning(out <- old[["SelectionColor"]], "deprecated")
+        expect_true(is.na(out))
 
         test <- old
         slot(test, "SelectionEffect", check=FALSE) <- "Restrict"
@@ -92,6 +94,7 @@ test_that("new visual selection getters work correctly", {
         expect_warning(out <- old[["ColumnSelectionRestrict"]], "outdated")
         expect_false(out)
 
+        # Seeing what happens with restrict.
         test <- old
         slot(test, "SelectionEffect", check=FALSE) <- "Restrict"
         expect_warning(outr <- test[["RowSelectionRestrict"]], "outdated")
@@ -105,6 +108,12 @@ test_that("new visual selection getters work correctly", {
             expect_false(outr)
         }
 
+        if (is(old, "ComplexHeatmapPlot")) {
+            expect_warning(out <- test[["ShowColumnSelection"]], "outdated")
+            expect_false(out)
+        }
+
+        # Seeing what happens with another selection effect.
         test <- old
         slot(test, "SelectionEffect", check=FALSE) <- "Color"
         expect_warning(outr <- test[["RowSelectionRestrict"]], "outdated")
@@ -116,5 +125,49 @@ test_that("new visual selection getters work correctly", {
             expect_warning(out <- test[["ShowColumnSelection"]], "outdated")
             expect_true(out)
         }
+    }
+})
+
+test_that("old visual selection setters work correctly", {
+    for (obj in visual.interest) {
+        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+
+        test <- old
+        expect_warning(test[["SelectionEffect"]] <- "Restrict", "deprecated")
+        if (.multiSelectionDimension(old)=="row") {
+            expect_true(test[["RowSelectionRestrict"]])
+        } else {
+            expect_true(test[["ColumnSelectionRestrict"]])
+        }
+
+        if (is(old, "ComplexHeatmapPlot")) {
+            expect_false(test[["ShowColumnSelection"]])
+        }
+
+        expect_warning(test[["SelectionEffect"]] <- "Color", "deprecated")
+        expect_false(test[["RowSelectionRestrict"]])
+        expect_false(test[["ColumnSelectionRestrict"]])
+
+        if (is(old, "ComplexHeatmapPlot")) {
+            expect_true(test[["ShowColumnSelection"]])
+        } else {
+            test <- old
+            expect_warning(test[["SelectionColor"]] <- "red", "deprecated")
+            expect_identical(old, test)
+        }
+    }
+})
+
+test_that("new visual selection setters work correctly", {
+    for (obj in visual.interest) {
+        old <- readRDS(file.path("objects", paste0(obj, ".rds")))
+        
+        test <- old
+        expect_warning(test[["RowSelectionRestrict"]] <- TRUE, "outdated")
+        expect_true(test[["RowSelectionRestrict"]])
+
+        test <- old
+        expect_warning(test[["ColumnSelectionRestrict"]] <- TRUE, "outdated")
+        expect_true(test[["ColumnSelectionRestrict"]])
     }
 })
