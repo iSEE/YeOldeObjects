@@ -1,8 +1,10 @@
 # This tests the faceting capabilities for all versions of objects.
 # library(iSEE); library(testthat); source("test_facet.R")
 
+dotplots <- c("ColumnDataPlot", "RowDataPlot", "ReducedDimensionPlot", "FeatureAssayPlot", "SampleAssayPlot")
 of.interest <- c(
-    file.path("2.2.0", c("ColumnDataPlot", "RowDataPlot", "ReducedDimensionPlot", "FeatureAssayPlot", "SampleAssayPlot"))
+    file.path("2.0.0", dotplots),
+    file.path("2.2.0", dotplots)
 )
 
 of.interest <- file.path("../objects", paste0(of.interest, ".rds"))

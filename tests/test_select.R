@@ -1,13 +1,17 @@
 # This tests the updated selection functionality.
 # library(iSEE); library(testthat); source("test_select.R")
 
+plots <- c("ColumnDataPlot", "RowDataPlot", "ReducedDimensionPlot", "FeatureAssayPlot", "SampleAssayPlot", "ComplexHeatmapPlot")
 visual.interest <- c(
-    file.path("2.2.0", c("ColumnDataPlot", "RowDataPlot", "ReducedDimensionPlot", "FeatureAssayPlot", "SampleAssayPlot", "ComplexHeatmapPlot"))
+    file.path("2.0.0", plots),
+    file.path("2.2.0", plots)
 )
 
+tables <- c("ColumnDataTable", "RowDataTable")
 base.interest <- c(
     visual.interest, 
-    file.path("2.2.0", c("ColumnDataTable", "RowDataTable"))
+    file.path("2.0.0", tables),
+    file.path("2.2.0", tables)
 )
 
 base.interest <- file.path("../objects", paste0(base.interest, ".rds"))
